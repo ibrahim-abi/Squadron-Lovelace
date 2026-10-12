@@ -1,0 +1,13 @@
+# Private working copies of the Part 1 brief (not part of the submission)
+drafts/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+!.env.example

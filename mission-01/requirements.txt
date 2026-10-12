@@ -1,0 +1,5 @@
+# 04_dialogic_engine.py runs on the Python standard library alone (offline simulator).
+# The packages below are OPTIONAL and only needed for live LLM voices (--llm api).
+anthropic>=1.13
+google-genai
+openai            # also used for Groq (OpenAI-compatible endpoint)
