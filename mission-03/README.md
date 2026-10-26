@@ -20,6 +20,7 @@ This mission rebuilds **AURA Subsystem 03 (Distributed Multi-Head Attention Mesh
 | 4 | Security & Ethics Sentinel | Arun Dev Valavath | [`04_Memory_Hierarchy_and_Safety_Audit.md`](04_Memory_Hierarchy_and_Safety_Audit.md) |
 | 5 | Full Squadron | all four | [`ps03_solution.ipynb`](ps03_solution.ipynb): all four parts assembled, saved with outputs |
 | — | Part 2 plots | — | [`figures/`](figures/): RoPE vs ALiBi decay, attention heatmaps, extrapolation angles |
+| — | Portal simulator test | — | [`figures/portal/`](figures/portal/): screenshots of the course portal's attention lab with our parameters (see below) |
 
 ps03 lists the submission files under `docs/weeks/week-03/problem_set/`. We keep one folder per mission (`mission-01/`, `mission-02/`, `mission-03/`), as in the course repository. The file names are exactly those in ps03.
 
@@ -29,7 +30,7 @@ ps03 lists the submission files under `docs/weeks/week-03/problem_set/`. We keep
 .
 ├── 01_MultiHead_Attention_Core.py … 04_Memory_Hierarchy_and_Safety_Audit.md   # the four deliverables (names fixed by ps03)
 ├── ps03_solution.ipynb                 # Part 5: integrated notebook
-├── figures/                            # plots written by 02_RoPE_Positional_Engine.py
+├── figures/                            # plots written by 02_RoPE_Positional_Engine.py; portal/ = simulator screenshots
 ├── README.md · requirements.txt
 └── tests/test_ps03.py                  # 26 tests (pytest)
 ```
@@ -98,7 +99,28 @@ The real out-of-memory test briefly fills the GPU and then frees everything. Clo
 * Live: 27 sessions filled our 8 GB card, then Windows spilled 15.5 GB into system RAM before the OOM.
 * PagedAttention admits 18× more requests than contiguous reservation (93.6% → 0.4% waste); MLA needs 7% of MHA's cache.
 
-**Portal simulator.** The course portal's *Spatial Attention Matrix & KV-Cache Quantum Lab* computes the KV-cache as $4 \cdot L \cdot H_{KV} \cdot d \cdot N \cdot B$ bytes and the bandwidth at 50 tokens/s. `kv_cache_bytes()` uses the same formula; a test checks it against the portal's default setting (32 layers, 8 KV heads, d = 128, N = 8,192, batch 4).
+## Portal simulator test (ps03 Part 5)
+
+On 2026-10-26 we drove the course portal's simulator (Bay 03 → *3. Simulation* → *Spatial Attention Matrix & KV-Cache Quantum Lab*) with the same parameters as our scripts, using a headless Chrome. Screenshots are in [`figures/portal/`](figures/portal/).
+
+**KV-Cache & GQA tab** (batch 1, 32 layers, all three architectures, all four context lengths). All **12 of 12** settings match our benchmark table exactly:
+
+| N | MHA (portal / ours) | GQA 4:1 (portal / ours) | MQA 32:1 (portal / ours) | Bandwidth at 50 tok/s, MHA (portal / ours) |
+| --: | :-: | :-: | :-: | :-: |
+| 1,024 | 512.0 / 512 MB | 128.0 / 128 MB | 16.0 / 16 MB | 25.0 / 25.0 GB/s |
+| 4,096 | 2,048.0 / 2,048 MB | 512.0 / 512 MB | 64.0 / 64 MB | 100.0 / 100.0 GB/s |
+| 16,384 | 8,192.0 / 8,192 MB | 2,048.0 / 2,048 MB | 256.0 / 256 MB | 400.0 / 400.0 GB/s |
+| 32,768 | 16,384.0 / 16,384 MB | 4,096.0 / 4,096 MB | 512.0 / 512 MB | 800.0 / 800.0 GB/s |
+
+The portal computes $4 \cdot L \cdot H_{KV} \cdot d \cdot N \cdot B$ bytes, the same formula as our `kv_cache_bytes()`. A test also checks our function against the portal's default setting.
+
+**RoPE Rotation tab.**
+* Positions with the same offset give the same score: $(m, n) = (4, 1), (10, 7), (16, 13)$ all show −0.990 ($= \cos 3$), and $(9, 1), (16, 8)$ both show −0.146 ($= \cos 8$). This is the relative invariance that `02_RoPE_Positional_Engine.py` proves and tests.
+* Moving the *Base Frequency* slider from 1,000 to 496,000 leaves the score at −0.990. The lab draws only the first frequency pair, $\theta_1 = \text{base}^0 = 1$, which does not depend on the base. The effect of the base on the slower pairs is shown in our `figures/rope_extrapolation_angles.png`.
+
+**FlashAttention Tiling tab.** The lab labels FlashAttention's memory accesses $O(N \cdot d)$. Our measurement in `04_Memory_Hierarchy_and_Safety_Audit.md` §1.4 shows this holds for the *extra memory*. The *traffic* is $\Theta(N^2 d^2 / M)$, with a constant 3.6–3.9× saving for 128-row tiles.
+
+**Attention Heatmap tab.** It uses the same causal (lower-triangular) masking as our `MultiHeadSelfAttention`.
 
 ## Week 3 discussion prompts (squadron answers)
 
