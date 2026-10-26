@@ -1,0 +1,5 @@
+# Mission 3 runs on PyTorch 2.4+ (CPU or CUDA). For an NVIDIA GPU install the CUDA build, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu128
+torch>=2.4
+matplotlib>=3.8      # figures from 02_RoPE_Positional_Engine.py
+pytest>=8            # test suite
