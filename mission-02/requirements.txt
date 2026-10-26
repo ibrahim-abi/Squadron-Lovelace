@@ -1,0 +1,5 @@
+# 04_fst_noisy_simulator.py runs on the Python standard library alone (offline script).
+# The packages below are OPTIONAL and only needed for live LLM answers (--llm api).
+anthropic>=1.13
+google-genai
+openai            # also used for Groq (OpenAI-compatible endpoint)

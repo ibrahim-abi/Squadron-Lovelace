@@ -6,6 +6,7 @@ Instructor reference repository: https://github.com/Unisvet/couse-c-ai
 | Mission | Folder | Topic |
 | :-: | :--- | :--- |
 | 01 | [`mission-01/`](mission-01/) | The Architecture of Argument & Dialogic Protocols (Socratic Elenchus & Galilean 3-Persona Debate) |
+| 02 | [`mission-02/`](mission-02/) | FST Dialogue Systems, Lovelace's Objection & Noisy Channels (FSTDialogueManager, Anti-Turing Protocol, Shannon Noisy Channel) |
 
 Each mission folder is self-contained. See its `README.md` for the deliverables, how to run the engine and how to run the tests.
 
@@ -13,6 +14,10 @@ Each mission folder is self-contained. See its `README.md` for the deliverables,
 cd mission-01
 pip install -r requirements.txt
 python 04_dialogic_engine.py            # offline run, no API key needed
+python -m pytest                        # test suite
+
+cd ../mission-02
+python 04_fst_noisy_simulator.py        # offline run, no API key needed
 python -m pytest                        # test suite
 ```
 
