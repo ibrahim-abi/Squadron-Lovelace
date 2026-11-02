@@ -8,6 +8,7 @@ Instructor reference repository: https://github.com/Unisvet/couse-c-ai
 | 01 | [`mission-01/`](mission-01/) | The Architecture of Argument & Dialogic Protocols (Socratic Elenchus & Galilean 3-Persona Debate) |
 | 02 | [`mission-02/`](mission-02/) | FST Dialogue Systems, Lovelace's Objection & Noisy Channels (FSTDialogueManager, Anti-Turing Protocol, Shannon Noisy Channel) |
 | 03 | [`mission-03/`](mission-03/) | Multi-Head Attention, RoPE & Grouped-Query KV-Cache (PyTorch from scratch, VRAM/latency benchmark, FlashAttention & KV-cache DoS audit) |
+| 04 | [`mission-04/`](mission-04/) | Direct Preference Optimization (DPO), Verbosity Regularization & Steering Vector Control (PyTorch DPO Loss, Bradley-Terry calibration, SimPO, Activation Steering & Alignment Tax Audit) |
 
 Each mission folder is self-contained. See its `README.md` for the deliverables, how to run the engine and how to run the tests.
 
@@ -23,6 +24,10 @@ python -m pytest                        # test suite
 
 cd ../mission-03                        # needs PyTorch: pip install -r requirements.txt
 python 01_MultiHead_Attention_Core.py   # each of the three scripts runs on its own
+python -m pytest                        # test suite
+
+cd ../mission-04                        # needs PyTorch: pip install -r requirements.txt
+python 01_DPO_Loss_Core.py              # each deliverable runs on its own
 python -m pytest                        # test suite
 ```
 
