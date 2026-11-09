@@ -11,3 +11,6 @@ __pycache__/
 # Secrets
 .env
 !.env.example
+
+# Submission PDFs (local only, do not push to GitHub)
+*-doc.pdf
